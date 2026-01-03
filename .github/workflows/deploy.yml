@@ -1,6 +1,6 @@
 name: Deploy to EC2
 
-# Trigger the workflow when you push to main branch
+# Trigger on push to main branch
 on:
   push:
     branches:
@@ -11,18 +11,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code from GitHubbb
+      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Deploy to EC2 using SSH
-      - name: Deploy to EC2
+      # Step 2: Deploy to EC2 via SSH
+      - name: Deploy index.html to EC2
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
+          port: 22
           script: |
-            # Copy the index.html to web server folder
-            sudo cp index.html /var/www/html/index.html
-
+            # Make sure web server folder exists
+            sudo mkdir -p /var/www/html
+            # Give ec2-user permission
+            sudo chown -R ec2-user:ec2-user /var/www/html
+            # Copy index.html
+            cp index.html /var/www/html/index.html
