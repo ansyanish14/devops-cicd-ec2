@@ -1,2 +1,2 @@
-# devops-cicd-ec2
-mini project to CI/CD to EC2
+# Devops-cicd-ec2
+Automatically deploy a web application to an EC2 instance whenever code is pushed to GitHub using GitHub Actions.
